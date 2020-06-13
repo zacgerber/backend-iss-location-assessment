@@ -4,7 +4,7 @@
 ### Objectives
 - Use the `requests` package to query real-world data
 - Improve skills with dictionaries and indexing
-- Learn about Python's built-in [Turtle](https://docs.python.org/3.3/library/turtle.html?highlight=turtle) graphics library
+- Learn about Python's built-in [turtle](https://docs.python.org/3.3/library/turtle.html?highlight=turtle) graphics library
 
 ### Part A
 Using [this public API](http://api.open-notify.org/astros.json), write a Python program to obtain a list of the astronauts who are currently in space. Print their full names, the spacecraft they are currently on board, and the total number of astronauts in space.
