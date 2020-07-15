@@ -18,39 +18,48 @@ for p in people:
     print(p['name'] + ', Craft: ' + str(p['craft']))
 
 
-url = 'http://api.open-notify.org/iss-now.json'
-response = urllib.request.urlopen(url)
-result = json.loads(response.read())
-
-location = result['iss_position']
+url1 = requests.get('http://api.open-notify.org/iss-now.json')
+# response = requests.get(url)
+# response.raise_for_status()
+# response = urllib.request.urlopen(url)
+# result = json.loads(response.read())
+iss_time = url1.json()['timestamp']
+# print(time.strftime('%H:%M:%S', time.gmtime(iss_time)))
+location = url1.json()['iss_position']
 lat = float(location['latitude'])
 lon = float(location['longitude'])
 
 print('Latitude: ', lat)
 print('Longitude: ', lon)
 
-
 new_lat = float(lat)
 new_lon = float(lon)
 
+url = f'http://api.open-notify.org/iss-pass.json?lat={lat}&lon={lon}'
+response = requests.get(url)
+response.raise_for_status()
+
 screen = turtle.Screen()
 screen.setup(720, 360)
-screen.bgpic(
-    '/Users/zacgerber/zacs-quarter3/backend-iss-location-assessment/map.gif')
+screen.bgpic('map.gif')
 screen.setworldcoordinates(-180, -90, 180, 90)
 
-screen.register_shape(
-    '/Users/zacgerber/zacs-quarter3/backend-iss-location-assessment/iss.gif')
+screen.register_shape('iss.gif')
 iss = turtle.Turtle()
-iss.shape(
-    '/Users/zacgerber/zacs-quarter3/backend-iss-location-assessment/iss.gif')
+iss.shape('iss.gif')
 iss.setheading(90)
 iss.penup()
 iss.goto(new_lon, new_lat)
 
+over = response.json()['response'][1]['risetime']
+# time.ctime(over)
+style = ('Arial', 12, 'bold')
+iss.write(time.ctime(iss_time), align='center', font=style)
+
 # Space Center, Houston
 # lat = float(29.5502)
 # lon = float(-95.097)
+
 url = f'http://api.open-notify.org/iss-pass.json?lat={lat}&lon={lon}'
 response = requests.get(url)
 response.raise_for_status()
@@ -67,7 +76,7 @@ location.goto(lon, lat)
 location.dot(5)
 location.hideturtle()
 over = response.json()['response'][1]['risetime']
-time.ctime(over)
+# time.ctime(over)
 style = ('Arial', 12, 'normal')
 location.write(time.ctime(over), align='center', font=style)
 
