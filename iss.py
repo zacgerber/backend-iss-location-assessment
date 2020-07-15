@@ -1,14 +1,13 @@
 
 import json
 import turtle
-import urllib.request
-# import requests
 import time
+import urllib.request
+import requests
 
 
 url = 'http://api.open-notify.org/astros.json'
 response = urllib.request.urlopen(url)
-
 result = json.loads(response.read())
 
 print('People in Space: ', result['number'])
@@ -53,8 +52,11 @@ iss.goto(new_lon, new_lat)
 # lat = float(29.5502)
 # lon = float(-95.097)
 url = f'http://api.open-notify.org/iss-pass.json?lat={lat}&lon={lon}'
-response = urllib.request.urlopen(url)
-result = json.loads(response.read())
+response = requests.get(url)
+response.raise_for_status()
+# response = urllib.request.urlopen(url)
+# result = json.loads(response.read())
+
 # Indianapolis
 lat = 39.768452
 lon = -86.156212
@@ -64,10 +66,10 @@ location.color('yellow')
 location.goto(lon, lat)
 location.dot(5)
 location.hideturtle()
-over = result['response'][1]['risetime']
+over = response.json()['response'][1]['risetime']
 time.ctime(over)
 style = ('Arial', 12, 'normal')
-location.write(over, align='center', font=style)
+location.write(time.ctime(over), align='center', font=style)
 
 if screen is not None:
     print('Click on screen to exit ...')
