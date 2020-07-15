@@ -5,7 +5,6 @@ import time
 import urllib.request
 import requests
 
-
 url = 'http://api.open-notify.org/astros.json'
 response = urllib.request.urlopen(url)
 result = json.loads(response.read())
@@ -17,14 +16,8 @@ people = result['people']
 for p in people:
     print(p['name'] + ', Craft: ' + str(p['craft']))
 
-
 url1 = requests.get('http://api.open-notify.org/iss-now.json')
-# response = requests.get(url)
-# response.raise_for_status()
-# response = urllib.request.urlopen(url)
-# result = json.loads(response.read())
 iss_time = url1.json()['timestamp']
-# print(time.strftime('%H:%M:%S', time.gmtime(iss_time)))
 location = url1.json()['iss_position']
 lat = float(location['latitude'])
 lon = float(location['longitude'])
@@ -50,11 +43,12 @@ iss.shape('iss.gif')
 iss.setheading(90)
 iss.penup()
 iss.goto(new_lon, new_lat)
+iss.color('yellow')
 
+# time stamp for iss
 over = response.json()['response'][1]['risetime']
-# time.ctime(over)
 style = ('Arial', 12, 'bold')
-iss.write(time.ctime(iss_time), align='center', font=style)
+iss.write(time.ctime(iss_time), font=style)
 
 # Space Center, Houston
 # lat = float(29.5502)
@@ -63,8 +57,6 @@ iss.write(time.ctime(iss_time), align='center', font=style)
 url = f'http://api.open-notify.org/iss-pass.json?lat={lat}&lon={lon}'
 response = requests.get(url)
 response.raise_for_status()
-# response = urllib.request.urlopen(url)
-# result = json.loads(response.read())
 
 # Indianapolis
 lat = 39.768452
@@ -76,23 +68,9 @@ location.goto(lon, lat)
 location.dot(5)
 location.hideturtle()
 over = response.json()['response'][1]['risetime']
-# time.ctime(over)
 style = ('Arial', 12, 'normal')
 location.write(time.ctime(over), align='center', font=style)
 
 if screen is not None:
     print('Click on screen to exit ...')
     screen.exitonclick()
-
-# url = f'http://api.open-notify.org/iss-pass.json?lat={lat}&lon={lon}'
-# response = urllib.request.urlopen(url)
-# result = json.loads(response.read())
-# response = requests.get(url).read()
-# response = urllib.request.urlopen(url)
-# result = json.loads(response.rea())
-# location.goto(lon, lat)
-# location.dot(5)
-# location.hideturtle()
-# over = result['response'][1]['risetime']
-# style = ('Arial', 12, 'normal')
-# location.write(time.ctime(over, font=style))
