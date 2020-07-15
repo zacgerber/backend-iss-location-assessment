@@ -2,7 +2,9 @@
 import json
 import turtle
 import urllib.request
+# import requests
 import time
+
 
 url = 'http://api.open-notify.org/astros.json'
 response = urllib.request.urlopen(url)
@@ -14,7 +16,7 @@ print('People in Space: ', result['number'])
 people = result['people']
 
 for p in people:
-    print(p['name'], ' in ', p['craft'])
+    print(p['name'] + ', Craft: ' + str(p['craft']))
 
 
 url = 'http://api.open-notify.org/iss-now.json'
@@ -22,25 +24,24 @@ response = urllib.request.urlopen(url)
 result = json.loads(response.read())
 
 location = result['iss_position']
-lat = location['latitude']
-lon = location['longitude']
+lat = float(location['latitude'])
+lon = float(location['longitude'])
 
 print('Latitude: ', lat)
 print('Longitude: ', lon)
+
 
 new_lat = float(lat)
 new_lon = float(lon)
 
 screen = turtle.Screen()
-
 screen.setup(720, 360)
-screen.setworldcoordinates(-180, -90, 180, 90)
-screen.register_shape(
-    '/Users/zacgerber/zacs-quarter3/backend-iss-location-assessment/iss.gif')
 screen.bgpic(
     '/Users/zacgerber/zacs-quarter3/backend-iss-location-assessment/map.gif')
+screen.setworldcoordinates(-180, -90, 180, 90)
 
-# screen.register_shape('iss.gif')
+screen.register_shape(
+    '/Users/zacgerber/zacs-quarter3/backend-iss-location-assessment/iss.gif')
 iss = turtle.Turtle()
 iss.shape(
     '/Users/zacgerber/zacs-quarter3/backend-iss-location-assessment/iss.gif')
@@ -48,28 +49,32 @@ iss.setheading(90)
 iss.penup()
 iss.goto(new_lon, new_lat)
 
-
-# Indianapolis
-lat = float(39.768452)
-lon = float(-86.156212)
-
 # Space Center, Houston
 # lat = float(29.5502)
 # lon = float(-95.097)
 
+# Indianapolis
+lat = 39.768452
+lon = -86.156212
 location = turtle.Turtle()
 location.penup()
 location.color('yellow')
 location.goto(lon, lat)
 location.dot(5)
 location.hideturtle()
-screen.exitonclick()
 
-url = 'http://api.open-notify.org/iss-pass.json?lat=' + str(lat)
-+ '&lon=' + str(lon)
-response = urllib.request.urlopen(url)
-result = json.loads(response.read())
-# print(result)
+if screen is not None:
+    print('Click on screen to exit ...')
+    screen.exitonclick()
 
-over = result['response'][1]['risetime']
-location.write(time.ctime(over))
+
+# url = 'http://api.open-notify.org/iss-pass.json?lat={}&lon={}'.format(
+#     lat, lon)
+# response = urllib.request.urlopen(url)
+# result = json.loads(response.read())
+# # response = requests.get(url)
+# # result = json.loads(response.rea())
+
+# over = response.json()['response'][0]['risetime']
+# style = ('Arial', 12, 'normal')
+# location.write(time.ctime(over), font=style)
